@@ -11,5 +11,5 @@ message ProductUpdatedEvent {
     string description = 4;
     string imageUrl = 5;
     int64 user_id = 6 [(gogoproto.customname) = "UserID"];
-    int64 version = 8;
+    int64 version = 7;
 }
