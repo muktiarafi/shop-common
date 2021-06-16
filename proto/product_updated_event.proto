@@ -9,7 +9,7 @@ message ProductUpdatedEvent {
     string title = 2;
     double price = 3;
     string description = 4;
-    string imageUrl = 5;
+    string imageUrl = 5 [(gogoproto.customname) = "ImageURL"];
     int64 user_id = 6 [(gogoproto.customname) = "UserID"];
     int64 version = 7;
 }
