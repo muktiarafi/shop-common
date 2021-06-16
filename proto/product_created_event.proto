@@ -5,11 +5,11 @@ package proto;
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 message ProductCreatedEvent {
-    int64 product_id = 1 [(gogoproto.customname) = "productID"];
+    int64 product_id = 1 [(gogoproto.customname) = "ProductID"];
     string title = 2;
     double price = 3;
     string description = 4;
     string imageUrl = 5;
-    int64 user_id = 6 [(gogoproto.customname) = "userID"];
+    int64 user_id = 6 [(gogoproto.customname) = "UserID"];
     int64 version = 7;
 }
