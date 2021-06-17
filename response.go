@@ -3,6 +3,8 @@ package common
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/mailru/easyjson"
 )
 
 type Response struct {
@@ -23,6 +25,18 @@ func NewResponse(status int, message string, data interface{}) *Response {
 		Message: message,
 		Data:    data,
 	}
+}
+
+func (r *Response) SendEasyJSON(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(r.Status)
+
+	b, err := easyjson.Marshal(r)
+	if err != nil {
+		return err
+	}
+	_, err = w.Write(b)
+	return err
 }
 
 func (r *Response) SendJSON(w http.ResponseWriter) error {
