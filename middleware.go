@@ -48,3 +48,32 @@ func RequireAuth(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
+
+func RequireOneOfRole(roles ...string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			userPayload, err := UserPayloadFromContext("RequireRoles", r)
+			if err != nil {
+				SendError(w, err)
+				return
+			}
+
+			for _, role := range roles {
+				for _, userRole := range userPayload.Roles {
+					if role == userRole {
+						next.ServeHTTP(w, r)
+						return
+					}
+				}
+			}
+
+			exc := NewSingleMessageException(
+				EUNAUTHORIZED,
+				"RequireRoles",
+				"Not Authorized",
+				errors.New("trying to access endpoint without appropiate role"),
+			)
+			SendError(w, exc)
+		})
+	}
+}
